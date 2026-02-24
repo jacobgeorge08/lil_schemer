@@ -137,7 +137,7 @@
     ((null? lat) '())
     ((eq? old (car lat))
      (cons old (cons new (multiinsertR new old (cdr lat)))))
-    (else (cons (car lat) multiinsertR new old (cdr lat)))))
+    (else (cons (car lat) (multiinsertR new old (cdr lat))))))
 
 ;; Is this wrong? Why
 ;; (define (multiinsertL new old lat)

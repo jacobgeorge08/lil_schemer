@@ -370,7 +370,7 @@
 ;; Write the function pick
 (define (pick a lat)
   (cond
-    ((zero? (sub1 a) (car lat)))
+    ((zero? (sub1 a)) (car lat))
     (else (pick (sub1 a) (cdr lat)))))
 
 ;; What is (rempick n lat) where n is 3 and lat is (hotdogs with hot mustard)
