@@ -1,5 +1,28 @@
 #lang racket
 
+;; --- COOKIE RECIPIE ---
+;; (define cookies
+;;   (bake
+;;    ('(350 degrees))
+;;    ('(12 minutes))
+;;    (mix
+;;     ('(walnuts 1 cup))
+;;     ('(chocolate-chips 16 ounces))
+;;     (mix
+;;      (mix
+;;       ('(flour 2 cups))
+;;       ('(oatmeal 2 cups) )
+;;       ('(salt .5 teaspoon) )
+;;       ('(baking-powder 1 teaspoon))
+;;       ('(baking-soda 1 teaspoon) ) )
+;;      (mix
+;;       ('(eggs 2 large))
+;;       ('(vanilla 1 teaspoon))
+;;       (cream
+;;        ('(butter 1 cup))
+;;        ('(sugar 2 cups))))))))
+;; Personally oatmeal in cookies sounds terrible but thats just me
+
 (define (atom? x)
   (not (pair? x)))
 
@@ -222,7 +245,7 @@
   (cond
     ((atom? x) #f)
     ((null? x) #f)
-    ((null? (cdr x)) #f )
+    ((null? (cdr x)) #f)
     ((null? (cdr (cdr x))) #t)
     (else #f)))
 
@@ -274,34 +297,30 @@
 ;; ((apples peaches)
 ;;  (pumpkin pie)
 ;;  (apples peaches))
-;; No becuase although it is a list of pairs, it is not a set of pairs
+;; No because although it is a list of pairs, it is not a set of pairs
 
 ;; Is l a rel where l is ((apples peaches) (pumpkin pie))
-;; I think so becuase again it is a list of pairs that are sets
+;; I think so coz it is a list of pairs that are sets
 
 ;; Is l a rel where l is ((4 3) (4 2) (7 6) (6 2) (3 4))
-;; Again yes
+;; Yes
 
 ;; Is rel a fun where rel is ((4 3) (4 2) (7 6) (6 2) (3 4))
-;; No we use fun to stand for function
+;; No we use fun to stand for function.
+;; Functions are one to mappings of inputs and outputs and we have two pairs
+;; that have the first element 4 with different second elements
 
 ;; What is (fun? rel) where rel is ((8 3) (4 2) (7 6) (6 2) (3 4))
-;; #f
+;; #t because (firsts rel) is a set
 
 ;; What is (fun? rel) where rel is ((d 4) (b 0) (b 9) (e 5) (g 4) )
-;; #f
+;; #f since b is repeated
 
 ;; Write fun? with set? and firsts
 (define (firsts l)
   (cond
     ((null? l) '())
     (else (cons (car (car l)) (firsts (cdr l))))))
-
-(define (set? lat)
-  (cond
-    ((null? lat) #t)
-    ((member? (car lat) (cdr lat)) #f)
-    (else (set? (cdr lat)))))
 
 (define (fun? rel)
   (set? (firsts rel)))
@@ -314,5 +333,75 @@
 ;; rel is ((8 a) (pumpkin pie) (got sick))
 ;; ((a 8) (pie pumpking) (got sick))
 
+;; What is actually the diff between rel and fun
+;; Both are a list pairs that are sets.
+;; The difference is fun cannot have the same first input repeated twice.
+;; We would just get the same output(2nd element) and it wouldnt be a set.
+
 ;; You can now write revrel
+;; (define (revrel l)
+;;   (cond
+;;     ((null? l) '())
+;;     (else
+;;      (cons (build (second (car l)) (first (car l))) (revrel (cdr l))))))
+
+;; Would this be correct?
+;; (define revrel (lambda (rel)
+;;                  (cond
+;;                    ((null? rel) '())
+;;                    (else (cons (cons
+;;                                 (car (cdr (car rel)))
+;;                                 (cons (car (car rel))
+;;                                       (quote ())))
+;;                                (revrel (cdr rel)))))))
+;; Yeah. Its the same fucntion as ours without the helpers build, first and second.
+;; Also yes I see how readability really helps
+
+
+;; Suppose we had the function revpair that reversed the two components of a pair like
+(define revpair (lambda (pair)
+                  (build (second pair) (first pair))))
+
+(define (revrel l)
+  (cond
+    ((null? l) '())
+    (else
+     (cons (revpair (car l)) (revrel (cdr l))))))
+
+;; Can you guess why fun is not a fullfun where fun is ((8 3) (4 2) (7 6) (6 2) (3 4))
+;; b) Both 4 and 6 have the output 2
+
+;; Why is #t the value of (fullfun? fun) where fun is ((8 3) (4 8) (7 6) (6 2) (3 4))
+;; Distinct first and second elements
+
+;; What is (fullfun? fun) where fun is
+;; ((grape raisin)
+;;  (plum prune)
+;;  (stewed prune))
+;; #f
+
+;; What is (fullfun? fun) where fun is
+;; ((grape raisin)
+;;  (plum prune)
+;;  (stewed grape))
+;; #t
+
+;; Define fullfun?
+(define (seconds l)
+  (cond
+    ((null? l) '())
+    (else (cons (second (car l)) (seconds (cdr l))))))
+
+(define (fullfun? l)
+  ((set? (seconds l))))
+
+;; What is another name for fullfun?
+;; one-to-one?
+
+;; Can you think of a second way to write one-to-one ?
+;; (define one-to-one? (lambda (fun)
+;;                       (fun? (revrel fun))))
+
+;; Is ((chocolate chip) (doughy cookie)) a one-to-one function?
+;; Yah
 
