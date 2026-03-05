@@ -1,7 +1,8 @@
 #lang racket
 
 (define (atom? x)
-  (not (pair? x)))
+  (and(not (pair? x))
+      (not (null? x))))
 
 ;; What is (rember* a l) where a is cup and
 ;; l is ((coffee) cup ((tea) cup) (and (hick)) cup)

@@ -24,7 +24,8 @@
 ;; Personally oatmeal in cookies sounds terrible but thats just me
 
 (define (atom? x)
-  (not (pair? x)))
+  (and (not (pair? x))
+       (not (null? x))))
 
 (define (member? a lat)
   (cond

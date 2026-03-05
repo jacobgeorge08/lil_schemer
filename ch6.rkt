@@ -1,7 +1,8 @@
 #lang racket
 
 (define (atom? x)
-  (not (pair? x)))
+  (and(not (pair? x))
+      (not (null? x))))
 
 ;; Is 1 an arithmetic expression?
 ;; Yea
