@@ -393,7 +393,7 @@
     (else (cons (second (car l)) (seconds (cdr l))))))
 
 (define (fullfun? l)
-  ((set? (seconds l))))
+  (set? (seconds l)))
 
 ;; What is another name for fullfun?
 ;; one-to-one?
