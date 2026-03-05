@@ -115,7 +115,7 @@
 ;; Try numbered? again.
 ;; (define (numbered? aexp)
 ;;   (cond
-;;     ((atom? (aexp)) (number? aexp))
+;;     ((atom? aexp) (number? aexp))
 ;;     ((eq? (car (cdr aexp)) '+)
 ;;      (and (numbered? (car aexp)) (numbered? (car (cdr (cdr aexp))))))
 ;;     ((eq? (car (cdr aexp)) '*)
